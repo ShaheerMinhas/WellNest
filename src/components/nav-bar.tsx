@@ -2,9 +2,9 @@ import logo from '../assets/wellnest-logo.svg';
 import {Link} from 'react-router-dom';
 import { useState } from 'react';
 
-// interface NumericProp {
-//     value: number;
-// }
+interface NumericProp {
+    value: number;
+}
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false)
