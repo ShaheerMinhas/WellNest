@@ -1,7 +1,10 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/landing-page';
-import SignIn from './pages/authentication/signin';
+import PricingPage from './pages/pricing-page';
+import ContactsPage from './pages/contacts-page';
+import GSPage from './pages/get-started-page';
+
 function App() {
 
   return (
@@ -9,7 +12,9 @@ function App() {
     <Routes>
       {/* Define the route to the landing page */}
       <Route path="/" element={<LandingPage />} />
-      <Route path='signin' element={<SignIn />}/>
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/contact" element={<ContactsPage />} />
+      <Route path="/getstarted" element={<GSPage />} />
     </Routes>
   </Router>
   )
