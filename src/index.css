@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
+
+html {
+  scroll-behavior: smooth;
+}
+
 @tailwind utilities;
+
+@layer utilities {
+  .underlined-title {
+    @apply relative;
+
+    &::after {
+      @apply content-[''] bg-gray-800 h-[3px] w-[0%] left-0 bottom-[3px] rounded-xl absolute duration-500 transition-all ease-out;
+    }
+
+    .group:hover &::after {
+      @apply w-full;
+    }
+  }
+
+  .underlined-nav {
+    @apply relative;
+
+    &::after {
+      @apply content-[''] bg-blue-500 h-[2px] w-[0%] left-0 bottom-[-3px] rounded-xl absolute duration-300 transition-all ease-out;
+    }
+
+    &:hover::after {
+      @apply w-full;
+    }
+  }
+
+}
