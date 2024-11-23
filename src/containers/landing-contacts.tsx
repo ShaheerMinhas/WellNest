@@ -22,8 +22,8 @@ const Contacts = () => {
           className="text-center"
             >
                 <div className="bg-white shadow-md flex flex-col items-center justify-center rounded-lg overflow-hidden p-8">
-                    <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
-                    <div className="space-y-4">
+                    <h3 className="text-3xl font-semibold mb-6">Contact Information</h3>
+                    <div className="space-y-4 text-lg">
                         <div className="flex items-center">
                             <Mail className="w-6 h-6 text-yellow-500 mr-4" />
                             <span>contact@wellnest.com</span>

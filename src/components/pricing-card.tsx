@@ -30,7 +30,7 @@ const PricingCard: React.FC<PricingCardProp> = ({ name, price, features }) => {
                     <span className="invisible relative">Get Started</span>
                 </button>
             </div>
-            <span className="absolute right-0 -mt-8 h-[100rem] w-12 -translate-y-[35rem] translate-x-20 rotate-12 transform bg-blue-400 opacity-5 transition-all duration-1000 ease-out group-hover:-translate-x-[40rem]" aria-hidden="true"></span>
+            <span className="absolute right-0 -mt-8 h-[100rem] w-12 -translate-y-[35rem] translate-x-24 rotate-12 transform bg-blue-400 opacity-5 transition-all duration-1000 ease-out group-hover:-translate-x-[40rem]" aria-hidden="true"></span>
         </div>
     );
 };
