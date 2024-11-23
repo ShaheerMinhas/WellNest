@@ -28,10 +28,13 @@ const NavBar = () => {
             </div>
             
             <div className="hidden md:flex space-x-4">
+                <Link to= "/signup">
+                
                 <button className="group relative inline-block overflow-hidden rounded-lg border-2 border-blue-600 px-4 py-2 text-blue-600">
                     <span className="absolute left-0 top-0 mb-0 flex h-full w-0 translate-x-0 transform bg-blue-600 transition-all duration-300 ease-out group-hover:w-full"></span>
                     <span className="relative group-hover:text-white">Sign Up</span>
                 </button>
+                </Link>
                 <Link to="/signin">
                 
                 <button className="group relative inline-block overflow-hidden rounded-lg bg-blue-600 px-4 py-2 text-white">

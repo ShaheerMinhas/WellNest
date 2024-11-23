@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './authlogo.png';
+import logo from '../authlogo.png';
 
 const SignIn: React.FC = () => {
   return (
