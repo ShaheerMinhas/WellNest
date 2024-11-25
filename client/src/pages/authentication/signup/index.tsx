@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../authlogo.png';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
   const [organizations, setOrganizations] = useState<{ id: number; name: string }[]>([]);
+  const [formData, setFormData] = useState({ email: '', password: '', organization: '' });
+  const navigate = useNavigate();
 
   // Fetch organizations from the backend API
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/get-organizations');
+        const response = await fetch('http://localhost:3000/api/organization/get-organizations');
         const data = await response.json();
         setOrganizations(data);
       } catch (error) {
@@ -19,10 +22,38 @@ const SignUp: React.FC = () => {
     fetchOrganizations();
   }, []);
 
+  // Handle input changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    // If the target is a select element and the name is 'organization', convert the value to a number
+    
+    const value = e.target.name === 'organization' ? parseInt(e.target.value) : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+    console.log(formData)
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        navigate('/signin');
+      } else {
+        console.error('Signup failed');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-3/4 max-w-4xl h-[80vh] bg-white shadow-lg rounded-lg overflow-hidden flex">
-        
+
         {/* Left Side - Sign Up Form */}
         <div className="w-1/2 p-12 flex flex-col justify-center">
           <div className="flex justify-center mb-6">
@@ -32,13 +63,16 @@ const SignUp: React.FC = () => {
             </div>
           </div>
           <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
 
             {/* Input for Email */}
             <p className="text-gray-500">Email</p>
             <input
               type="email"
+              name="email" // Add name attribute
+              value={formData.email}
               placeholder="Enter your Email"
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
 
@@ -46,6 +80,9 @@ const SignUp: React.FC = () => {
             <p className="text-gray-500">Password</p>
             <input
               type="password"
+              name="password" // Add name attribute
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Enter your Password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
@@ -53,17 +90,25 @@ const SignUp: React.FC = () => {
             {/* Dropdown for Selecting Organization */}
             <p className="text-gray-500">Select Organization</p>
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              name="organization"
+              value={formData.organization}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg"
+              required
             >
-              <option value="">-- Select your organization --</option>
+              <option value="" disabled>-- Select Organization --</option>
               {organizations.map((org) => (
                 <option key={org.id} value={org.id}>
                   {org.name}
                 </option>
               ))}
             </select>
+
             <div className="flex justify-center pt-8 items-center">
-              <button className="flex justify-center items-center w-48 bg-yellow-400 text-white py-2 rounded-lg font-semibold hover:bg-yellow-500">
+              <button
+                type="submit"
+                className="flex justify-center items-center w-48 bg-yellow-400 text-white py-2 rounded-lg font-semibold hover:bg-yellow-500"
+              >
                 Create Account
               </button>
             </div>
@@ -76,7 +121,10 @@ const SignUp: React.FC = () => {
           <p className="text-blue-200 mb-6 text-center">
             Already have an account? Sign in to manage your dashboard.
           </p>
-          <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50">
+          <button
+            onClick={() => navigate('/signin')}
+            className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50"
+          >
             Sign In
           </button>
         </div>
