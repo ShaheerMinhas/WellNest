@@ -22,7 +22,7 @@ const sendOTPEmail = async (email: string, otp: string) => {
     from: 'your-email@gmail.com',
     to: email,
     subject: 'Your OTP for Registration',
-    text: `Your OTP for registration is: ${otp}`,
+    text: `THANK YOU FOR REGISTERING WITH WELLNEST . \n Your OTP for registration is: ${otp}`,
   };
 
   try {
@@ -79,8 +79,9 @@ export const sendOTP = async (req: Request, res: Response): Promise<any> => {
     // Save the OTP to the database for verification
     const expiresAt = new Date();
   expiresAt.setMinutes(expiresAt.getMinutes() + 5);
+    console.log("yaha");
     await pool.execute('INSERT INTO otp_verifications (email, otp ,expires_at) VALUES (?, ?,?)', [email, otp,expiresAt]);
-
+ console.log("waha");
     // Send OTP via email
     await sendOTPEmail(email, otp);
 
@@ -127,7 +128,7 @@ export const loginUser = async (req: Request, res: Response) : Promise<any> => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email ,organization_id: user.organization_id }, SECRET_KEY, { expiresIn: '1h' });
         res.status(200).json({ token });
     } catch (error) {
         console.error(error);

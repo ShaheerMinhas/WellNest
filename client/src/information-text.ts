@@ -4,15 +4,16 @@ import { Brain, Heart, Users, Zap, Mail, Phone, MapPin, Check } from 'lucide-rea
 
 // Data for assessments
 const assessmentsData = [
-  {
-    title: "Depression",
-    description: "Identify symptoms of depression",
-    rt: '/depression'
-  },
+
   {
     title: "Anxiety",
     description: "Recognize the signs of anxiety",
     rt: '/anxiety'
+  },
+    {
+    title: "Depression",
+    description: "Identify symptoms of depression",
+    rt: '/depression'
   },
 ];
 

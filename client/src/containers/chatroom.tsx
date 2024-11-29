@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../assets/wellnest-logo.svg';
 
 interface ChatProps {
   questions: string[];
+  testtype: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ questions }) => {
+const Chat: React.FC<ChatProps> = ({ questions, testtype }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -61,6 +62,45 @@ const Chat: React.FC<ChatProps> = ({ questions }) => {
   } else {
     interpretation = 'Extreme';
   }
+
+  // Send the data to the backend
+  const sendResultsToBackend = async () => {
+    const token = localStorage.getItem("token"); // Fetch token from local storage
+    if (token) {
+      try {
+        const response = await fetch("http://localhost:3000/api/assess/savetest", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          
+          body: JSON.stringify({
+            testtype: parseInt(testtype, 10), // Convert testtype to an integer
+            totalscore: totalScore,
+          }),
+        });
+        console.log("Saving test:",testtype);
+        if (!response.ok) {
+          throw new Error(`Failed to send results: ${response.status} ${response.statusText}`);
+        }
+  
+        console.log("Results saved successfully!",testtype);
+      } catch (error) {
+        console.error("Error sending results:", error);
+      }
+    } else {
+      console.warn("Token not found in localStorage.");
+    }
+  };
+  
+
+  // Call sendResultsToBackend once the test is complete
+  useEffect(() => {
+    if (isComplete) {
+      sendResultsToBackend();
+    }
+  }, [isComplete]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -120,7 +160,6 @@ const Chat: React.FC<ChatProps> = ({ questions }) => {
       )}
     </div>
   );
-}
-
+};
 
 export default Chat;

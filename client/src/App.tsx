@@ -6,6 +6,11 @@ import Layout from './pages/lay-out';
 import Dashboard from './pages/dashboard';
 import Depression from './pages/assessments/depression-page';
 import Anxiety from './pages/assessments/anxiety-page';
+import Settings from './pages/settings/settings-page';
+import ChangeUsername from './pages/settings/changename-page';
+import AdminDashboard from './pages/admin-pages/admin-dashboard';
+import AdminUserManagement from './pages/admin-pages/admin-usermanagement';
+import AssessmentCreation from './pages/admin-pages/admin-assessments';
 
 function App() {
   return (
@@ -18,6 +23,11 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="/depression" element={<Depression />} />
           <Route path="/anxiety" element={<Anxiety />} />
+          <Route path="/admin" element ={<AdminDashboard/>} />
+          <Route path="/admin/employees" element={<AdminUserManagement/>} />
+          <Route path="/admin/assessments" element={<AssessmentCreation/>} />
+          <Route path="/settings" element ={<Settings/>} />
+          <Route path="/settings/change-username" element ={<ChangeUsername/>} />
         </Route>
       </Routes>
     </Router>

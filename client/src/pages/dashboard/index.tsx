@@ -4,6 +4,7 @@ import DashboardHeader from "../../containers/dashboard-header";
 import MentalWellnessTracker from "../../containers/mental-wellness-tracker";
 import Activities from "../../containers/activities";
 import Calendar from "../../components/calendar";
+import AssessmentsList from "../../containers/assessments-list";
 
 const Dashboard: React.FC = () => {
   const [userName, setUserName] = useState<string>("Loading...");
@@ -47,11 +48,10 @@ const Dashboard: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Left Sidebar for Assessments 
-      <aside className="w-full md:w-1/4 p-4 bg-white shadow-lg">
-        <AssessmentsList />
-      </aside>*/}
-
       {/* Main Content */}
+       <aside className="w-72 bg-white shadow-md">
+        <AssessmentsList />
+      </aside>
       <main className="flex-grow p-6 space-y-6">
         <DashboardHeader Name={userName} /> {/* Pass dynamic username */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -61,6 +61,7 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Calendar />
         </div>
+      
       </main>
     </motion.div>
   );

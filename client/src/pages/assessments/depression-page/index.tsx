@@ -11,7 +11,7 @@ const Depression: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <main className="flex-grow">
-        <Chat questions={bdi_questions} />
+        <Chat questions={bdi_questions} testtype="2"/>
       </main>
     </motion.div>
   );

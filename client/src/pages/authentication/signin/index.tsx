@@ -14,16 +14,28 @@ const SignIn: React.FC = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
-      const { token } = response.data;
+      // First, attempt admin authentication
+      const response = await axios.post('http://localhost:3000/api/admin/auth', { email, password });
+      const { token, companyId } = response.data;
 
-      // Store token in localStorage (or cookies for secure storage)
+      // Store token and companyId for admin
       localStorage.setItem('token', token);
+      localStorage.setItem('companyId', String(companyId));
 
-      // Navigate to the dashboard
-      navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to log in');
+      navigate('/admin');
+      return;
+    } catch (adminError) {
+      // If admin login fails, proceed with normal user authentication
+      try {
+        const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+        const { token } = response.data;
+
+        // Store token for normal user
+        localStorage.setItem('token', token);
+        navigate('/dashboard');
+      } catch (err: any) {
+        setError(err.response?.data?.error || 'Failed to log in');
+      }
     }
   };
 

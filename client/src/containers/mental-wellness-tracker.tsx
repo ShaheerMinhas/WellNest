@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProgressCircle from "../components/progress-circle";
-import { tracker } from "../demo-data";
 
 const MentalWellnessTracker: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [scores, setScores] = useState({ depression: 0, anxiety: 0 });
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [error, setError] = useState<string | null>(null); // Error state
 
   // Normalize function
   function normalize(value: number): number {
@@ -15,9 +17,58 @@ const MentalWellnessTracker: React.FC = () => {
     return ((value1 + value2) / 2) * 100; // Averaging and scaling to 0-100
   }
 
+  // Fetch data for depression and anxiety
+  const fetchScores = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("No token found in localStorage.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/assess/getScores", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          testtypes: [1, 2], // Send the test types (1 for depression, 2 for anxiety)
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched scores:", data);
+
+      // Extract depression and anxiety scores from results array
+      const depressionResult = data.results.find((result: any) => result.test_id === 1);
+      const anxietyResult = data.results.find((result: any) => result.test_id === 2);
+
+      setScores({
+        depression: depressionResult?.score || 0,
+        anxiety: anxietyResult?.score || 0,
+      });
+    } catch (error) {
+      console.error("Error fetching scores:", error);
+      setError("Error fetching scores");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Call the fetch function when the component mounts
+  useEffect(() => {
+    fetchScores();
+  }, []);
+
   // Normalize depression and anxiety scores
-  const normalized_depression = normalize(tracker.depression);
-  const normalized_anxiety = normalize(tracker.anxiety);
+  const normalized_depression = normalize(scores.depression);
+  const normalized_anxiety = normalize(scores.anxiety);
 
   // Calculate the average of normalized depression and anxiety and round to 0 decimal points
   const avgScore = Math.round(average(normalized_depression, normalized_anxiety));
@@ -41,7 +92,11 @@ const MentalWellnessTracker: React.FC = () => {
         </button>
       </div>
       <div className="mr-10">
-        <ProgressCircle progress={avgScore} /> {/* Pass the averaged score to ProgressCircle */}
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <ProgressCircle progress={avgScore} /> // Pass the averaged score to ProgressCircle
+        )}
       </div>
 
       {/* Modal */}
@@ -49,8 +104,18 @@ const MentalWellnessTracker: React.FC = () => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-20">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h3 className="text-xl font-semibold mb-4">Score History</h3>
-            <p className="mb-2"><strong>Original Depression Score:</strong> {tracker.depression}</p>
-            <p className="mb-2"><strong>Original Anxiety Score:</strong> {tracker.anxiety}</p>
+            {error ? (
+              <p className="text-red-500">{error}</p>
+            ) : (
+              <>
+                <p className="mb-2">
+                  <strong>Original Depression Score:</strong> {scores.depression}
+                </p>
+                <p className="mb-2">
+                  <strong>Original Anxiety Score:</strong> {scores.anxiety}
+                </p>
+              </>
+            )}
             <button
               className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
               onClick={closeModal} // Close modal

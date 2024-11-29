@@ -11,9 +11,7 @@ const Layout: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Left Sidebar for Assessments */}
-      <aside className="w-72 bg-white shadow-md">
-        <AssessmentsList />
-      </aside>
+   
 
       {/* Main content */}
       <main className="flex-grow px-6 space-y-6">
