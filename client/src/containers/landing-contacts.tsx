@@ -10,7 +10,7 @@ const Contacts: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/save-email", {
+      const response = await fetch("http://localhost:3000/api/email/save-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

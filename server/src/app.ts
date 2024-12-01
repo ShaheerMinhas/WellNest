@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import emailRoutes from './routes/emailRoutes';
 import organizationRoutes from './routes/organizationRoutes'; // Import the organization routes
+import authRoutes from './routes/authRoutes'; // Import the auth routes
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(
 app.use(express.json());
 
 // Use routes
-app.use('/api', emailRoutes); // Email-related routes
-app.use('/api', organizationRoutes); // Organization-related routes
+app.use('/api/email', emailRoutes); // Email-related routes
+app.use('/api/organization', organizationRoutes); // Organization-related routes
+app.use('/api/auth', authRoutes); // Authentication routes (register, login)
 
 export default app;
