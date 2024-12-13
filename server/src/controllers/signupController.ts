@@ -3,12 +3,12 @@ import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import pool from '../config/db';
 
-const SECRET_KEY = process.env.JWT_SECRET || 'your_secret_key';
+const SECRET_KEY = 'your_secret_key';
 
 // Register a new user
 export const registerUser = async (req: Request, res: Response) : Promise<any> => {
-    const { email, password, organization } = req.body;
-    if (!email || !password || !organization) {
+    const { name,email, password, organization } = req.body;
+    if (!name||!email || !password || !organization) {
         console.log(email,password,organization)
         return res.status(400).json({ error: 'All fields are required' });
     }
@@ -16,8 +16,8 @@ export const registerUser = async (req: Request, res: Response) : Promise<any> =
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log("HERE");
-        const query = 'INSERT INTO users (email, password, organization_id) VALUES (?, ?, ?)';
-        await pool.execute(query, [email, hashedPassword, organization]);
+        const query = 'INSERT INTO users (name,email, password, organization_id) VALUES (?, ?, ?, ?)';
+        await pool.execute(query, [name,email, hashedPassword, organization]);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -30,7 +30,7 @@ export const loginUser = async (req: Request, res: Response) : Promise<any> => {
     const { email, password } = req.body;
 
     try { 
-        
+        console.log("Hi Trying to sign in");
         const query = 'SELECT * FROM users WHERE email = ?';
         const [rows]: any = await pool.execute(query, [email]);
 

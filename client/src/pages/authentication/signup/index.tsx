@@ -4,7 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
   const [organizations, setOrganizations] = useState<{ id: number; name: string }[]>([]);
-  const [formData, setFormData] = useState({ email: '', password: '', organization: '' });
+  const [formData, setFormData] = useState({
+    name: '', // Added Name field
+    email: '',
+    password: '',
+    organization: '',
+  });
   const navigate = useNavigate();
 
   // Fetch organizations from the backend API
@@ -24,11 +29,9 @@ const SignUp: React.FC = () => {
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    // If the target is a select element and the name is 'organization', convert the value to a number
-    
     const value = e.target.name === 'organization' ? parseInt(e.target.value) : e.target.value;
     setFormData({ ...formData, [e.target.name]: value });
-    console.log(formData)
+    console.log(formData);
   };
 
   // Handle form submission
@@ -57,7 +60,6 @@ const SignUp: React.FC = () => {
         {/* Left Side - Sign Up Form */}
         <div className="w-1/2 p-12 flex flex-col justify-center">
           <div className="flex justify-center mb-6">
-            {/* Placeholder for Logo */}
             <div className="w-12 h-12 flex items-center justify-center">
               <img src={logo} alt="Logo" />
             </div>
@@ -65,11 +67,22 @@ const SignUp: React.FC = () => {
           <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
 
+            {/* Input for Name */}
+            <p className="text-gray-500">Name</p>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              placeholder="Enter your Name"
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+
             {/* Input for Email */}
             <p className="text-gray-500">Email</p>
             <input
               type="email"
-              name="email" // Add name attribute
+              name="email"
               value={formData.email}
               placeholder="Enter your Email"
               onChange={handleChange}
@@ -80,7 +93,7 @@ const SignUp: React.FC = () => {
             <p className="text-gray-500">Password</p>
             <input
               type="password"
-              name="password" // Add name attribute
+              name="password"
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your Password"
