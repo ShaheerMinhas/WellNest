@@ -1,10 +1,27 @@
+import {user} from "../demo-data"
+
 const DashboardHeader: React.FC = () => {
   return (
-    <div className="relative bg-purple-500 text-white rounded-lg p-6 shadow-md">
-      <div className="absolute top-4 left-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-xl font-bold">
-        JD
+    <div
+      className="relative bg-purple-500 text-white rounded-lg shadow-md h-72 flex items-end p-4"
+      style={{
+        backgroundImage: `url(${user.cover})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="flex items-center">
+        {/* Profile Picture */}
+        <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-gray-300">
+        <img
+            src={user.avatar}
+            alt={`${user.name}'s Profile`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        {/* Name */}
+        <h1 className="ml-4 text-2xl font-bold">{user.name}</h1>
       </div>
-      <h1 className="ml-20 mt-4 text-2xl">John Doe</h1>
     </div>
   );
 };

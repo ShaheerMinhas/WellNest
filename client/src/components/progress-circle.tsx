@@ -8,7 +8,7 @@ interface ProgressCircleProps {
     const offset = circumference - (progress / 100) * circumference;
   
     return (
-      <svg className="w-20 h-20" viewBox="0 0 100 100">
+      <svg className="w-32 h-32" viewBox="0 0 100 100">
         <circle
           cx="50"
           cy="50"

@@ -6,19 +6,14 @@ import { Brain, Heart, Users, Zap, Mail, Phone, MapPin, Check } from 'lucide-rea
 const assessmentsData = [
   {
     title: "Depression",
-    action: "Start Assessment",
-    description: "Complete this assessment to check for signs of depression and get personalized results."
+    description: "Identify symptoms of depression",
+    rt: '/depression'
   },
   {
     title: "Anxiety",
-    action: "Contact Professional",
-    description: "If you feel anxious, take this assessment to understand your condition and reach out for professional help."
+    description: "Recognize the signs of anxiety",
+    rt: '/anxiety'
   },
-  {
-    title: "Anger",
-    action: "Start Assessment",
-    description: "Take this test to understand the triggers and frequency of your anger and get connected with a therapist."
-  }
 ];
 
 // Features data
@@ -87,21 +82,10 @@ const pricing: PricingPlan[] = [
   }
 ];
 
-// Dashboard-related data
-const user = {
-  name: "John Doe",
-  avatar: "https://via.placeholder.com/150"
-};
-
-const tracker = {
-  percentage: 78,
-  description: "Track your progress and view history."
-};
-
 const activities = {
   title: "Daily Activities",
   deadline: "Tomorrow",
   action: "Start Activity"
 };
 
-export { assessmentsData, features, pricing, user, tracker, activities };
+export { assessmentsData, features, pricing, activities };
