@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import DashboardHeader from "../../containers/dashboard-header";
-import AssessmentsList from "../../containers/assessments-list";
 import MentalWellnessTracker from "../../containers/mental-wellness-tracker";
 import Activities from "../../containers/activities";
+import Calendar from "../../components/calendar";
 import Calendar from "../../components/shared/calendar";
 
 const Dashboard: React.FC = () => {

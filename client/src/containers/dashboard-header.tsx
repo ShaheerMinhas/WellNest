@@ -1,3 +1,6 @@
+import {user} from "../demo-data"
+
+const DashboardHeader: React.FC = () => {
 import React from 'react';
 
 interface DashboardHeaderProps {
