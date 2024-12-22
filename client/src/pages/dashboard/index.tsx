@@ -4,10 +4,9 @@ import DashboardHeader from "../../containers/dashboard-header";
 import MentalWellnessTracker from "../../containers/mental-wellness-tracker";
 import Activities from "../../containers/activities";
 import Calendar from "../../components/calendar";
-import Calendar from "../../components/shared/calendar";
 
 const Dashboard: React.FC = () => {
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("Loading...");
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -19,19 +18,26 @@ const Dashboard: React.FC = () => {
           });
 
           if (!response.ok) {
-            throw new Error(`Error fetching user: ${response.statusText}`);
+            throw new Error(`Error fetching user: ${response.status} ${response.statusText}`);
           }
 
-          const data = await response.json();
-          setUserName(data.name); // Assuming the API response contains { name: "John Doe" }
+          const data: { name: string } = await response.json();
+          if (data.name) {
+            setUserName(data.name); // Assuming the API response contains { name: "John Doe" }
+          } else {
+            throw new Error("Name property is missing in the response.");
+          }
+        } else {
+          console.warn("Token not found in localStorage.");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setUserName("Guest"); // Fallback username
       }
     };
 
     fetchUserName();
-  }, []);
+  }, []); // Empty dependency array ensures it runs only once on mount.
 
   return (
     <motion.div
@@ -40,10 +46,10 @@ const Dashboard: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Left Sidebar for Assessments */}
+      {/* Left Sidebar for Assessments 
       <aside className="w-full md:w-1/4 p-4 bg-white shadow-lg">
         <AssessmentsList />
-      </aside>
+      </aside>*/}
 
       {/* Main Content */}
       <main className="flex-grow p-6 space-y-6">
