@@ -37,53 +37,50 @@ export const saveTestResults = async (req: Request, res: Response): Promise<void
     res.status(500).json({ error: 'Error saving test results' });
   }
 };
+
 export const checkAssessmentCompletion = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const token = req.headers.authorization?.split(' ')[1];
-      if (!token) {
-        res.status(401).json({ error: 'No token provided' });
-        return;
-      }
-  
-      const decoded = jwt.verify(token, SECRET_KEY) as jwt.JwtPayload;
-      const employeeId = decoded.id; // Extract employee ID from the token
-  
-      const { testtype } = req.body; // Test type from the request body
-  
-      if (!testtype) {
-        res.status(400).json({ error: 'Test type is required' });
-        return;
-      }
-  
-      console.log("Finding for", employeeId, "and testtype", testtype);
-  
-      // Query to check if the assessment is completed
-      const query = `
-        SELECT is_completed
-        FROM test_results
-        WHERE employee_id = ? AND test_id = ?
-      `;
-      
-      const [rows]: any = await pool.execute(query, [employeeId, testtype]);
-  
-      if (rows.length === 0) {
-          res.status(200).json({ completed: false, message: 'Assessment not found' });
-          console.log("here");
-          return;
-      }
-  
-      const isCompleted = 1; // Check if the test is completed
-  
-      if (isCompleted) {
-        res.status(200).json({ completed: true, message: 'Assessment already completed' });
-      } else {
-        res.status(200).json({ completed: false, message: 'Assessment not completed yet' });
-      }
-    } catch (error) {
-      console.error('Error checking assessment completion:', error);
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      res.status(401).json({ error: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, SECRET_KEY) as jwt.JwtPayload;
+    const employeeId = decoded.id;
+
+    const { testtype } = req.body;
+    if (!testtype) {
+      res.status(400).json({ error: 'Test type is required' });
+    }
+
+    console.log("Finding for", employeeId, "and testtype", testtype);
+
+    const query = `
+      SELECT is_completed
+      FROM test_results
+      WHERE employee_id = ? AND test_id = ?
+    `;
+    
+    const [rows]: any = await pool.execute(query, [employeeId, testtype]);
+
+    if (rows.length === 0) {
+      res.status(200).json({ completed: false, message: 'Assessment not found' });
+    }
+
+    const isCompleted = rows[0].is_completed === 1;
+
+    res.status(200).json({
+      completed: isCompleted,
+      message: isCompleted ? 'Assessment already completed' : 'Assessment not completed yet'
+    });
+
+  } catch (error) {
+    console.error('Error checking assessment completion:', error);
+    if (!res.headersSent) {
       res.status(500).json({ error: 'Internal server error' });
     }
-  };
+  }
+};
 export const getTestResults = async (req: Request, res: Response): Promise<void> => {
   try {
     // Extract token from the request headers

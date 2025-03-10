@@ -26,7 +26,6 @@ const AssessmentsList: React.FC = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
   useEffect(() => {
     const fetchAssessmentCompletion = async () => {
       const token = localStorage.getItem("token");
@@ -34,45 +33,39 @@ const AssessmentsList: React.FC = () => {
         console.log("No token found in localStorage.");
         return;
       }
-
+  
       try {
-        // Create a Set to track completed assessments
-        const completedTestTypes = new Set<number>();
-
-        // Loop over each testtype (1 and 2) and fetch completion status
-        for (let testtype = 1; testtype <= 2; testtype++) {
+        const completedTestTypes = new Set<number>(); // Temporary set
+  
+        const responses = await Promise.all([1, 2].map(async (testtype) => {
           const response = await fetch("http://localhost:3000/api/assess/checktestcompletion", {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ testtype }), // Send current testtype in the request body
+            body: JSON.stringify({ testtype }),
           });
-
+  
           if (!response.ok) {
             throw new Error(`Failed to fetch data for testtype ${testtype}: ${response.status}`);
           }
-
+  
           const data = await response.json();
           console.log(`Assessment completion data for testtype ${testtype}:`, data);
-
-          // If the test is completed, add the testtype to the Set
-          if (data.completed) {
-            completedTestTypes.add(testtype); // Add testtype to Set
-          }
-        }
-
-        // Update state with completed test types
-        setCompletedAssessments(completedTestTypes);
+  
+          if (data.completed) completedTestTypes.add(testtype);
+        }));
+  
+        setCompletedAssessments(completedTestTypes); // Update state once
       } catch (error) {
         console.error("Error fetching assessment completion:", error);
       }
     };
-
+  
     fetchAssessmentCompletion();
   }, []);
-
+  
   const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
   return (
