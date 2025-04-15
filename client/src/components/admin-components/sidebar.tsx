@@ -31,8 +31,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ selectedMenu, onMenuClick }
       navigate('/admin/assessments'); // Navigate to /admin/assessments
     } else if (menu === 'Activities') {
       navigate('/admin/activities'); // Navigate to /admin/activities
-    } else if (menu === 'Generate Report') {
-      navigate('/admin/report'); // Navigate to /admin/report
+    } else if (menu === 'Feedback') {
+      navigate('/admin/feedback'); // Navigate to feedback page
+    
+    // Navigate to /admin/report
     } else if (menu === 'Notify') {
       navigate('/admin/notify'); // Navigate to /admin/notify
     } else if (menu === 'Contact Professionals') {
@@ -89,15 +91,15 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ selectedMenu, onMenuClick }
           <span className="font-semibold">Activities</span>
         </a>
         <a
-          href="#"
-          className={`flex items-center space-x-4 text-gray-700 hover:text-green-500 ${
-            selectedMenu === 'Generate Report' ? 'text-green-500' : ''
-          }`}
-          onClick={() => handleMenuClick('Generate Report')}
-        >
-          <BarChart2 className="w-5 h-5" />
-          <span className="font-semibold">Generate Report</span>
-        </a>
+  href="#"
+  className={`flex items-center space-x-4 text-gray-700 hover:text-green-500 ${
+    selectedMenu === 'Feedback' ? 'text-green-500' : ''
+  }`}
+  onClick={() => handleMenuClick('Feedback')}
+>
+  <BarChart2 className="w-5 h-5" />
+  <span className="font-semibold">Feedback</span>
+</a>
         <a
           href="#"
           className={`flex items-center space-x-4 text-gray-700 hover:text-green-500 ${

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import logo from '../assets/wellnest-logo.svg';
+import AssessmentsList from './assessments-list';
 
 interface ChatProps {
   questions: string[];
@@ -104,6 +105,7 @@ const Chat: React.FC<ChatProps> = ({ questions, testtype }) => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
+      
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto flex flex-col-reverse p-4">
         <div className="space-y-4">

@@ -11,6 +11,9 @@ import ChangeUsername from './pages/settings/changename-page';
 import AdminDashboard from './pages/admin-pages/admin-dashboard';
 import AdminUserManagement from './pages/admin-pages/admin-usermanagement';
 import AssessmentCreation from './pages/admin-pages/admin-assessments';
+import Events from './pages/events';
+import Feedback from './pages/feedback';
+import FeedbackView from './pages/admin-pages/admin-feedback';
 
 function App() {
   return (
@@ -28,6 +31,10 @@ function App() {
           <Route path="/admin/assessments" element={<AssessmentCreation/>} />
           <Route path="/settings" element ={<Settings/>} />
           <Route path="/settings/change-username" element ={<ChangeUsername/>} />
+          <Route path="/events" element={<Events/>}/>
+          <Route path="/feedback" element={<Feedback />}/>
+
+          <Route path="/admin/feedback" element={<FeedbackView />}/>
         </Route>
       </Routes>
     </Router>

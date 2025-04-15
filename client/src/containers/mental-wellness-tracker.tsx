@@ -69,10 +69,12 @@ const MentalWellnessTracker: React.FC = () => {
   // Normalize depression and anxiety scores
   const normalized_depression = normalize(scores.depression);
   const normalized_anxiety = normalize(scores.anxiety);
-
+  localStorage.setItem('dt1',scores.depression.toString());
+  localStorage.setItem('at1',scores.anxiety.toString());
+  console.log("HERE DT IS",localStorage.getItem('dt1'));
   // Calculate the average of normalized depression and anxiety and round to 0 decimal points
   const avgScore = Math.round(average(normalized_depression, normalized_anxiety));
-
+  localStorage.setItem('healthMetric',avgScore.toString());
   // Function to open modal
   const openModal = () => setIsModalOpen(true);
 

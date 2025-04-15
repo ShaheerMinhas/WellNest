@@ -32,12 +32,12 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ Name }) => {
       }}
     >
       {/* Dynamic initials display */}
-      <div className="absolute top-4 left-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-xl font-bold">
+      <div className="absolute top-8 left-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-xl font-bold">
         {initials}
       </div>
 
       {/* Dynamic Name */}
-      <h1 className="ml-20 mt-4 text-2xl text-bold">{Name}</h1>
+      <h1 className="ml-20 mt-4 text-4xl font-bold">Hi There {Name}</h1>
 
       {/* Reload Icon */}
       <button

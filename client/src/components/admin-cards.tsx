@@ -5,6 +5,10 @@ import { Users, CheckSquare, Heart, Activity } from 'lucide-react';
 const DashboardCards: React.FC = () => {
   const [totalUsers, setTotalUsers] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
+  const [positiveMoods, setPositiveMoods] = useState<number | null>(null);
+  const [negativeMoods, setNegativeMoods] = useState<number | null>(null);
+  const [assessmentResultsCount, setAssessmentResultsCount] = useState<number | null>(null);
+  const [averageHealth, setAverageHealth] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchTotalUsers = async () => {
@@ -38,83 +42,114 @@ const DashboardCards: React.FC = () => {
         setError('Failed to fetch total users');
       }
     };
+    
+    const fetchAssessmentResultsCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/admin/assess/assessment-results/count');
+        setAssessmentResultsCount(response.data.count);
+      } catch (err) {
+        setError('Failed to fetch assessment results count');
+      }
+    };
+    
+    const fetchPositiveMoodsCount = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/admin/assess/positive");
+        if (!response.ok) throw new Error("Failed to fetch positive moods");
+
+        const data = await response.json();
+        setPositiveMoods(data.positiveCount);
+      } catch (error) {
+        setError("Error fetching positive moods");
+        setPositiveMoods(0);
+      }
+    };
+
+    const fetchNegativeMoodsCount = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/admin/assess/negative");
+        if (!response.ok) throw new Error("Failed to fetch negative moods");
+
+        const data = await response.json();
+        setNegativeMoods(data.negativeCount);
+      } catch (error) {
+        setError("Error fetching negative moods");
+        setNegativeMoods(0);
+      }
+    };
+
+    const fetchAverageHealthMetric = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/admin/assess/totalhealth");
+        setAverageHealth(response.data.averageHealth);
+      } catch (error) {
+        setError("Error fetching average health metric");
+        setAverageHealth(0);
+      }
+    };
 
     fetchTotalUsers();
+    fetchAssessmentResultsCount();
+    fetchPositiveMoodsCount();
+    fetchNegativeMoodsCount();
+    fetchAverageHealthMetric();
   }, []);
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {/* Card 1 */}
+      {/* Card 1: Employees */}
       <div className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Employees</h3>
           <Users className="w-6 h-6 text-gray-500" />
         </div>
         <div className="mt-4">
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <>
-              <p className="text-3xl font-bold">{totalUsers}</p>
-              <p className="text-sm text-green-600 mt-1">↑ 0% Since last month</p>
-            </>
-          )}
+          {error ? <p className="text-red-500">{error}</p> : <p className="text-3xl font-bold">{totalUsers}</p>}
         </div>
       </div>
 
-      {/* Other cards */}
-      {/* Card 2 */}
+      {/* Card 2: Assessments Completed */}
       <div className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Assessments Completed</h3>
           <CheckSquare className="w-6 h-6 text-gray-500" />
         </div>
         <div className="mt-4">
-          <p className="text-3xl font-bold">2154</p>
-          <p className="text-sm text-red-600 mt-1">↓ 1.8% Since last month</p>
+          <p className="text-3xl font-bold">{assessmentResultsCount !== null ? assessmentResultsCount : 'Loading...'}</p>
         </div>
       </div>
 
-      {/* Card 3 */}
+      {/* Card 3: Positive Diagnoses */}
       <div className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Positive Diagnoses</h3>
           <Heart className="w-6 h-6 text-gray-500" />
         </div>
         <div className="mt-4">
-          <p className="text-3xl font-bold">678</p>
-          <p className="text-sm text-green-600 mt-1">↑ 5.2% Since last month</p>
+          <p className="text-3xl font-bold">{positiveMoods}</p>
         </div>
       </div>
 
-      {/* Card 4 */}
+      {/* Card 4: Negative Diagnoses */}
       <div className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Activities Participation</h3>
+          <h3 className="text-lg font-semibold">Negative Diagnoses</h3>
+          <Heart className="w-6 h-6 text-gray-500" />
+        </div>
+        <div className="mt-4">
+          <p className="text-3xl font-bold">{negativeMoods}</p>
+        </div>
+      </div>
+
+      {/* Card 5: Average Health Metric */}
+      <div className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Average Health Metric</h3>
           <Activity className="w-6 h-6 text-gray-500" />
         </div>
         <div className="mt-4">
-          <p className="text-3xl font-bold">+48.2%</p>
-          <p className="text-sm text-green-600 mt-1">↑ 3.87% Since last month</p>
-        </div>
-      </div>
-
-      {/* Card 5 */}
-      <div className="bg-white rounded-lg shadow-md p-4 col-span-2 lg:col-span-1">
-        <h3 className="text-lg font-semibold">Sessions By Channel</h3>
-        <div className="mt-4 space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="font-medium text-green-600">IT</span>
-            <span className="text-gray-600">20 assessments</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="font-medium text-green-600">Marketing</span>
-            <span className="text-gray-600">19 assessments</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="font-medium text-green-600">DevOps</span>
-            <span className="text-gray-600">25 assessments</span>
-          </div>
+          <p className="text-3xl font-bold">{averageHealth   }</p>
+          <p className="text-sm text-green-600 mt-1">↑ Value out of 100</p>
         </div>
       </div>
     </div>

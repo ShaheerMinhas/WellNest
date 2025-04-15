@@ -7,6 +7,6 @@ const router = express.Router();
 // Route to fetch total users based on companyId
 router.post('/totalUsers', fetchTotalUsers);
 // Route to fetch all employees based on companyId
-router.get('/allEmployees', fetchAllEmployees);
+router.post('/allEmployees', fetchAllEmployees);
 
 export default router;

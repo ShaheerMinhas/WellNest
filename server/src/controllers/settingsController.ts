@@ -26,8 +26,8 @@ export const changeUsername = async (req: Request, res: Response): Promise<void>
 
     // Update the username in the database
     const query = `
-      UPDATE employees 
-      SET username = ?
+      UPDATE users
+      SET name = ?
       WHERE id = ?
     `;
     const [result]: any = await pool.execute(query, [newUsername.trim(), userId]);

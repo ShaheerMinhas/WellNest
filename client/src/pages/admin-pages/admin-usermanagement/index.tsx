@@ -64,17 +64,17 @@ const AdminUserManagement: React.FC = () => {
         return;
       }
 
-      try {
-        const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT token to get payload
-        const companyId = decodedToken.companyId; // Get companyId from the token payload
+      try { // Decode JWT token to get payload
+        const companyId = localStorage.getItem('companyId') // Get companyId from the token payload
 
         if (!companyId) {
           setError('No company ID found in token.');
           return;
         }
 
-        const usersResponse = await axios.get(
+        const usersResponse = await axios.post(
           `http://localhost:3000/api/admin/users/allEmployees`,
+          { companyId }, // Send companyId in request body
           {
             headers: {
               Authorization: `Bearer ${token}`,
