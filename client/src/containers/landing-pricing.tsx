@@ -11,7 +11,7 @@ const Price = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <h2 className="mb-4 text-4xl font-bold text-blue-600 md:text-5xl lg:text-6xl">Choose Your Plan</h2>
+          <h2 className="mb-4 md:mb-8 text-4xl font-bold text-blue-600 md:text-5xl lg:text-6xl">Choose Your Plan</h2>
           <p className="mx-auto mb-6 max-w-2xl text-lg text-gray-700">
             Select the perfect plan for your team's mental wellness journey. All plans include our core features to support your employees' well-being.
           </p>

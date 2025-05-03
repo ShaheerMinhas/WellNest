@@ -3,7 +3,12 @@ import cors from 'cors';
 import emailRoutes from './routes/emailRoutes';
 import organizationRoutes from './routes/organizationRoutes'; // Import the organization routes
 import authRoutes from './routes/authRoutes'; // Import the auth routes
-
+import fetchUserRoutes from './routes/fetchuserRoutes';
+import assessRoutes from './routes/assessRoutes'
+import settingsRoutes from './routes/settingsRoutes';
+import adminauthRoutes from './routes/admin/adminauthRoutes'
+import adminUserRoutes from './routes/admin/adminUserRoutes'
+import adminassessmentRoutes from './routes/admin/adminassessmentRoutes'
 const app = express();
 
 // Enable CORS
@@ -14,7 +19,7 @@ app.use(
     credentials: true, // Allow cookies or authorization headers
   })
 );
-
+//
 // Middleware to parse JSON
 app.use(express.json());
 
@@ -22,5 +27,10 @@ app.use(express.json());
 app.use('/api/email', emailRoutes); // Email-related routes
 app.use('/api/organization', organizationRoutes); // Organization-related routes
 app.use('/api/auth', authRoutes); // Authentication routes (register, login)
-
+app.use('/api/fetch' ,fetchUserRoutes);
+app.use('/api/assess', assessRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/admin',adminauthRoutes);
+app.use('/api/admin/users',adminUserRoutes);
+app.use('/api/admin/assess',adminassessmentRoutes);
 export default app;
